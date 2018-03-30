@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $na=$_GET["name"];
 $ag=$_GET["age"];
 $lo=$_GET["location"];
@@ -19,7 +20,8 @@ echo "<b>in page<br>";
     		$counting=$conn->query($check_duplicate)->fetch_assoc();
     		if(!is_null($counting)){
     			$_SESSION["registered"]=1;
-    			header("Location: Login_v13/index.html"); 
+    			echo "im running nigga";
+    			//header("Location: Login_v13/index.html"); 
     			}
     		else{
     			$sql="insert into register_voter(name,age,location,phone) values ('$na','$ag','$lo','$ph')";
