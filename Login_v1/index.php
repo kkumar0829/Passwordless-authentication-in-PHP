@@ -1,4 +1,49 @@
-<!DOCTYPE html>
+<?php
+session_start();
+$_SESSION["fakeotp"]=9;
+$repetErr="";
+function validator(){
+	$phno = $_POST["voterid"];
+	if (!preg_match("/^[+0-9]+$/",$phno))
+  		$GLOBALS['repetErr'] = "Invalid PhoneNo Format";
+  	else
+  		{
+  			//checking that is it already registered ;
+				$ph=$_POST["voterid"];
+				$servername = "localhost";
+				$username = "root";
+				$password = "";
+				$dbname= "otpdata";
+			
+				$conn = new mysqli($servername, $username, $password,$dbname);
+				if ($conn->connect_error) 
+    				die("Connection failed: " . $conn->connect_error);
+
+    			$check_duplicate="select age from register_voter where phone =$ph";
+    			$counting=$conn->query($check_duplicate)->fetch_assoc();
+    			if(!is_null($counting)){    			
+    				$_SESSION["abc"]=$_POST["voterid"];
+					header("Location: ../voterid.php"); 
+    				}
+    			else{
+    				echo "this Number is not registered please register";
+					}	
+	}
+}
+
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+
+	if(empty($_POST["voterid"]))
+		$GLOBALS['nameErr'] = "Enter phone number";
+	else
+		validator();
+	}
+				
+?>
+
+
+
+	<!DOCTYPE html>
 <html lang="en">
 <head>
 	<title>Login V1</title>
@@ -37,22 +82,10 @@
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 
-						<form action="../voterid.php" method="get">
-
-							<input class="input100" type="te 	xt" name="voterid" placeholder="Enter Your Mobile no to get otp">
-
-
-
-						
-						<input class="login100-form-btn" type="submit" value="Login">
-							
-						
+						<form method="post" action='<?php echo $_SERVER["PHP_SELF"]; ?>'>
+							<input class="input100" type="text" name="voterid" placeholder="Enter Registered Mobile Number"><span><?php echo $repetErr; ?></span>
+							<input class="login100-form-btn" type="submit" value="Login">
 					</div>
-
-
-
-
-
 					</form>
 
 					

@@ -9,46 +9,22 @@ session_start();
 			$username = "root";
 			$password = "";
 			$dbname= "otpdata";
-			// Create connection
 			$conn = new mysqli($servername, $username, $password,$dbname);
-
-			// Check connection
-			if ($conn->connect_error) {
-    			die("Connection failed: " . $conn->connect_error);
-					}
-			echo "Connected successfully"."<br>";
-			$sql="select  phoneno , otp from verifyotp where otp =\"$recieved_otp\"";
+				if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+			$sql="select  phoneno  from verifyotp where otp =\"$recieved_otp\"";
 			$sql2="delete from verifyotp where otp =\"$recieved_otp\"";
 			$result=$conn->query($sql);
-
-			if($conn->query($sql)==TRUE)
-				echo "holalllll";
-			else
-				echo "jholaaaa";
-
-
-			echo "..............................."."<br>";
-			echo "..............................."."<br>";
-			echo "..............................."."<br>";
-
-			while($row = $result->fetch_assoc()) {
-				if($recieved_otp==$row["otp"]){
-					echo "all the session variable i encounter during project "."<br>";
-					print_r($_SESSION)."<br><br>";
+			$row = $result->fetch_assoc();
+			
 						if($_SESSION["abc"]==$row["phoneno"])
 							{
 								echo "<b><br><h1>successfully otp matched wih phoneno";
 								$conn->query($sql2);	
 								header("Location: startbootstrap-coming-soon-gh-pages/index.html"); /* Redirect browser */
 							}
-						else
-							echo "otp cannot be matched with phone no";
-				}
-				else
-					echo "otp didnot matched";
-    }
-
-
-
-
+						else{
+							$_SESSION["fakeotp"]=1;
+							header("Location: voterid.php"); 
+						}
+							
 ?>

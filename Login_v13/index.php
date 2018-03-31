@@ -46,7 +46,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 	else
 		validationphno();
 	if($GLOBALS['counter']==3){
-				echo "starting to save to database";
 				$na=$_POST["name"];
 				$ag=$_POST["age"];
 				$lo=$_POST["location"];
@@ -64,13 +63,19 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     			$check_duplicate="select age from register_voter where phone =$ph";
     			$counting=$conn->query($check_duplicate)->fetch_assoc();
     			if(!is_null($counting)){    			
-    				echo "already in db";
-    				header("Location: ../Login_v1/index.html"); 
+    				echo '<script>';
+						echo 'alert("Account already exists")';
+						echo '</script>';
+    				 
     				}
     			else{
     				$sql="insert into register_voter(name,age,location,phone) values ('$na','$ag','$lo','$ph')";
-					if($conn->query($sql)==TRUE)
-						echo "inserted your data into database";
+					if($conn->query($sql)==TRUE){
+						echo '<script>';
+						echo 'alert("You are registered with Us")';
+						echo '</script>';
+					}
+						
 					else
 						echo "failed to inset data to database";	
     				}
@@ -78,23 +83,91 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 	}
 ?>
 
-<html>
+
+
+
+
+
+
+
+<!DOCTYPE html>
 <head>
-	<title>
-		Register@Election
-	</title>
+<meta charset="UTF-8">
+<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<style>
-.error {color: #FF0000;}
-</style>
 
-	<form method="post" action='<?php echo $_SERVER["PHP_SELF"]; ?>'>
-	NAME::<input type="text" name="name" placeholder="name"><span class="error">* <?php echo $nameErr?></span><br>
-	AGE::<input type="text" name="age">						<span class="error">* <?php echo $ageErr?></span><br>
-	LOCATION::<input type="name" name="location"><br>
-	Ph No::<input type="name" name="phno">					<span class="error">* <?php echo $phnoErr;?></span><br>
-	<input type="Submit" value="Submit"><br>
+          <!-- LOGIN MODULE -->
+        <div class="login">
+            <div class="wrap">
+                <!-- TOGGLE -->
+                <div id="toggle-wrap">
+                    <div id="toggle-terms">
+                        <div id="cross">
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- SLIDER -->
+                <div class="content">
+                    <!-- LOGO -->
+                    <div class="logo">
+                        <a href="#"><img src="http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/logo.png" alt=""></a>
+                    </div>
+                    <!-- SLIDESHOW -->
+                    <div id="slideshow">
+                        <div class="one">
+                            <h2><span>CREATOR</span></h2>
+                            <p><p>#SANKET<br>
+                                #ACHINTYA<br>
+                                #ANKIT<br></p></p>
+                        </div>
+                        <div class="two">
+                            <h2><span>CANDIDATES</span></h2>
+                            <p>CAND_1<br>
+                                CAND_2<br>
+                                CAND_3<br></p>
+                        </div>
+                        <div class="three">
+                            <h2><span>GROUPS</span></h2>
+                            <p>Create your own groups and connect with others that share your interests</p>
+                        </div>
+                        <div class="four">
+                            <h2><span>SHARING</span></h2>
+                            <p>Share your works and knowledge with the community on the public showcase section</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- LOGIN FORM -->
+                <div class="user">
+
+                    <div class="form-wrap">
+                        <!-- TABS -->
+                    	<div class="tabs">
+                            
+                    		<h3 class="signup-tab"><a class="sign-up" href="#signup-tab-content"><span>Sign Up</span></a></h3>
+                    	</div>
+                        <!-- TABS <CONTENT></CONTENT>T -->
+                    	<div class="tabs-content">
+                            <!-- TABS CONTENT LOGIN -->
+                    		<div id="login-tab-content" class="active">
+
+	<form method="post"  class="login-form" action='<?php echo $_SERVER["PHP_SELF"]; ?>'>
+<input type="text" class="input" name="name" placeholder="name"><span class="error"> <?php echo $nameErr?></span>
+<input type="text" class="input" name="age" placeholder="age"><span class="error"> <?php echo $ageErr?></span>
+<input type="name" class="input" name="location" placeholder="location">
+<input type="name" class="input" name="phno" placeholder="phone number"><span class="error"> <?php echo $phnoErr;?></span>
+<input type="Submit"  value="Submit"><br>
 </form>
+                    		</div>
+                    	</div>
+                	</div>
+                </div>
+            </div>
+        </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script  src="js/index.js"></script>
 </body>
 </html>

@@ -1,19 +1,28 @@
-
 <?php
 session_start();
+if($_SESSION["fakeotp"]==1){
+	echo '<script>';
+	echo 'alert("Wrong OTP Entered")';
+	echo '</script>';
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>otp verification</title>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<style type="text/css">.be-detail-header { border-bottom: 1px solid #edeff2; margin-bottom: 50px; }</style>
 </head>
 <body>
 
 <?php
-$voteridr=$_GET["voterid"];
-$_SESSION["abc"]=$voteridr;
-echo $_SESSION["abc"];
-echo 	"<h1>enter the otp sent to your mobile </h1>".$voteridr."........";
+require_once 'vendor/autoload.php'; // Loads the library
+use Twilio\Rest\Client;
+$voteridr=$_SESSION["abc"];
+
 
 /*
 	$username = "achintyac77@gmail.com";
@@ -27,6 +36,7 @@ echo 	"<h1>enter the otp sent to your mobile </h1>".$voteridr."........";
 
 
 	$numbers = $voteridr; // A single number or a comma-seperated list of numbers
+if($_SESSION["fakeotp"]!=1){
 
 	$name="123467890ABCDEFGHIJKLMN";
 	$splitsvilla=str_split($name);
@@ -36,7 +46,7 @@ echo 	"<h1>enter the otp sent to your mobile </h1>".$voteridr."........";
 		$mytoken.="".$splitsvilla[$randomarraykeys[$i]];
 	}
 	
-	echo "this is token i send just for testing purpose...".$mytoken."  .......";
+	
 	
 	
 /*	$message = "your otp for login is ".$mytoken;
@@ -68,8 +78,7 @@ echo 	"<h1>enter the otp sent to your mobile </h1>".$voteridr."........";
 
 
 // Get the PHP helper library from https://twilio.com/docs/libraries/php
-require_once 'vendor/autoload.php'; // Loads the library
-use Twilio\Rest\Client;
+
 
 // Your Account Sid and Auth Token from twilio.com/user/account
 $sid = "AC124f8e2f4de929552b0a7106e7e2bf0e";
@@ -83,13 +92,6 @@ $client->messages->create(
     )
 );
 
-
-
-
-
-
-
-
 			$servername = "localhost";
 			$username = "root";
 			$password = "";
@@ -98,26 +100,42 @@ $client->messages->create(
 			$conn = new mysqli($servername, $username, $password,$dbname);
 
 			// Check connection
-			if ($conn->connect_error) {
-    			die("Connection failed: " . $conn->connect_error);
-					}
-			echo "Connected successfully"."<br>";
-			echo $numbers;	
+			if ($conn->connect_error)  die("Connection failed: " . $conn->connect_error);
 			$sql="INSERT into verifyotp (phoneno , otp) values ('$numbers','$mytoken');";
-			if($conn->query($sql)===TRUE)
-				echo "holalllll";
-			else
-				echo "jholaaaa";
+			if(!$conn->query($sql)===TRUE)
+				echo "failed to generate otp for the database purpose man";
+			
 
 
-
+	}
 
 ?>
 
-<form action ="verifyotp.php" method="post">
-	otp::<input type="text" name="otp"><br>
-	<input type="submit" value="Verify" >
-</form>
 
+<div class="container be-detail-container">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <br>
+            <img src="https://cdn2.iconfinder.com/data/icons/luchesa-part-3/128/SMS-512.png" class="img-responsive" style="width:200px; height:200px;margin:0 auto;"><br>
+            
+            <h1 class="text-center">Verify your mobile number</h1><br>
+              <p></p>
+        <br>
+
+
+
+<form action ="verifyotp.php" method="post">
+	<div class="row">                    
+                <div class="form-group col-sm-8">
+                	 <span style="color:red;"></span>
+	<input type="text" class="form-control" name="otp"><br>
+	 </div>
+	 <button type="submit" class="btn btn-primary  pull-right col-sm-3">Verify</button>
+  </div>
+            </form>
+        <br><br>
+        </div>
+    </div>        
+</div>
 </body>
 </html>
