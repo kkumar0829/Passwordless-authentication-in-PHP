@@ -1,3 +1,13 @@
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>;
+<?php
+session_start();
+if($_SESSION["regist"]==5){
+echo '<script type="text/javascript">';
+echo 'swal("Registered", "", "success")';
+echo '</script>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

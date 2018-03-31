@@ -1,4 +1,6 @@
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>;
 <?php
+session_start();
 $nameErr="";
 $ageErr="";
 $phnoErr="";
@@ -63,17 +65,20 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     			$check_duplicate="select age from register_voter where phone =$ph";
     			$counting=$conn->query($check_duplicate)->fetch_assoc();
     			if(!is_null($counting)){    			
-    				echo '<script>';
-						echo 'alert("Account already exists")';
-						echo '</script>';
-    				 
+    				echo '<script type="text/javascript">';
+                        echo 'swal("Account Already Exist", "", "error")';
+                        echo '</script>'; 
     				}
     			else{
     				$sql="insert into register_voter(name,age,location,phone) values ('$na','$ag','$lo','$ph')";
 					if($conn->query($sql)==TRUE){
-						echo '<script>';
-						echo 'alert("You are registered with Us")';
-						echo '</script>';
+						
+						 $_SESSION["regist"]=5;
+                        echo '<script type="text/javascript">';
+                        echo 'swal("Registered", "", "success")';
+                        echo '</script>';
+                        header("Location: ../startbootstrap-coming-soon-gh-pages/index.php"); /* Redirect browser */
+						
 					}
 						
 					else

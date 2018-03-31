@@ -1,11 +1,15 @@
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <?php
 session_start();
 $_SESSION["fakeotp"]=9;
-$repetErr="";
 function validator(){
 	$phno = $_POST["voterid"];
-	if (!preg_match("/^[+0-9]+$/",$phno))
-  		$GLOBALS['repetErr'] = "Invalid PhoneNo Format";
+	if (!preg_match("/^[+0-9]+$/",$phno)){
+  						echo '<script type="text/javascript">';
+                        echo 'swal("Invalid Phone Format", "", "info")';
+                        echo '</script>';
+	}
   	else
   		{
   			//checking that is it already registered ;
@@ -26,15 +30,20 @@ function validator(){
 					header("Location: ../voterid.php"); 
     				}
     			else{
-    				echo "this Number is not registered please register";
+    				 	echo '<script type="text/javascript">';
+                        echo 'swal("Not Registered", "", "error")';
+                        echo '</script>';
 					}	
 	}
 }
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 
-	if(empty($_POST["voterid"]))
-		$GLOBALS['nameErr'] = "Enter phone number";
+	if(empty($_POST["voterid"])){
+						echo '<script type="text/javascript">';
+                        echo 'swal("Field Empty", "", "info")';
+                        echo '</script>';
+	}
 	else
 		validator();
 	}
@@ -83,7 +92,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 
 						<form method="post" action='<?php echo $_SERVER["PHP_SELF"]; ?>'>
-							<input class="input100" type="text" name="voterid" placeholder="Enter Registered Mobile Number"><span><?php echo $repetErr; ?></span>
+							<input class="input100" type="text" name="voterid" placeholder="Enter Registered Mobile Number">
 							<input class="login100-form-btn" type="submit" value="Login">
 					</div>
 					</form>
